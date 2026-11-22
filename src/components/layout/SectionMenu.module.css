@@ -1,0 +1,43 @@
+.dialog::backdrop {
+  background: transparent;
+}
+
+.backdrop {
+  --menu-backdrop-blur: 0.75rem;
+  -webkit-backdrop-filter: blur(var(--menu-backdrop-blur));
+  backdrop-filter: blur(var(--menu-backdrop-blur));
+}
+
+.panel {
+  --menu-button-width: 40px;
+  --menu-button-height: 40px;
+  clip-path: inset(0 0 0 100%);
+}
+
+.textMask {
+  display: block;
+  overflow: hidden;
+}
+
+.text {
+  display: block;
+  transform: translateY(-100%);
+}
+
+.divider {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
+  background: rgb(30 30 30 / 60%);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    --menu-button-width: 44px;
+    --menu-button-height: 44px;
+  }
+}

@@ -1,0 +1,144 @@
+.box {
+  position: relative;
+  display: grid;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.mask {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: 0;
+  height: 100%;
+  background-color: var(--box-reveal-color, #1e1e1e);
+  pointer-events: none;
+}
+
+.box[data-box-motion='ready'] > .content {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.box[data-box-motion='playing'] > .mask {
+  animation: box-mask var(--box-reveal-duration, 1.2s) ease-in-out both;
+}
+
+.box[data-box-motion='playing'] > .content {
+  animation: box-content var(--box-reveal-duration, 1.2s) ease-in-out both;
+}
+
+@keyframes box-mask {
+  0% {
+    width: 0;
+    transform: translateX(0);
+  }
+  45%, 55% {
+    width: 100%;
+    transform: translateX(0);
+  }
+  100% {
+    width: 100%;
+    transform: translateX(101%);
+  }
+}
+
+@keyframes box-content {
+  0%, 50% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  60%, 100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Hover uses the outer box and assets; scroll reveals keep their own layers. */
+@media (hover: hover) and (pointer: fine) {
+  .workHover[data-box-motion='revealed']:hover > .content,
+  .stackLabelHover[data-box-motion='revealed']:hover > .content {
+    background-color: #2a2a2a;
+  }
+
+  .stackIconHover[data-box-motion='revealed']:hover {
+    box-shadow: 0 6px 14px rgb(30 30 30 / 18%);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .workHover,
+  .stackIconHover {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+  }
+
+  .workHover > .content,
+  .stackLabelHover > .content {
+    transition: background-color 280ms ease;
+  }
+
+  .workHover [data-work-logo],
+  .workHover [data-work-status],
+  .stackLabelHover [data-stack-label] {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .workHover [data-work-status] {
+    transform-origin: right center;
+  }
+
+  .workHover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 25%, rgb(255 255 255 / 9%) 50%, transparent 75%);
+    transform: translateX(-115%);
+    transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .workHover[data-box-motion='revealed']:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgb(30 30 30 / 14%);
+  }
+
+  .workHover[data-box-motion='revealed']:hover::after {
+    transform: translateX(115%);
+  }
+
+  .workHover[data-box-motion='revealed']:hover [data-work-logo] {
+    transform: scale(1.06);
+  }
+
+  .workHover[data-box-motion='revealed']:hover [data-work-status] {
+    transform: scaleX(1.35);
+  }
+
+  .stackLabelHover[data-box-motion='revealed']:hover [data-stack-label] {
+    transform: translateX(3px);
+  }
+
+  .stackIconHover[data-box-motion='revealed']:hover {
+    transform: translateY(-4px) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box[data-box-motion] > .content {
+    animation: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .box > .mask {
+    display: none;
+    animation: none;
+  }
+}

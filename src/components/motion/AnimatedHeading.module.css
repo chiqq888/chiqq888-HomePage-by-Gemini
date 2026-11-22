@@ -1,0 +1,92 @@
+.heading {
+  min-width: 0;
+  font-kerning: none;
+}
+
+.heading[data-heading-motion="pending"] {
+  visibility: hidden;
+}
+
+.heading :global(.line) {
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.heading :global(.line--inner) {
+  display: block;
+  white-space: nowrap;
+  opacity: 0;
+}
+
+.heading :global(.line--mask) {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background-color: currentColor;
+  pointer-events: none;
+}
+
+.heading :global(.animated--line .line--mask) {
+  animation: heading-mask var(--heading-reveal-duration, 1.2s) ease-in-out both;
+}
+
+.heading :global(.animated--line .line--inner) {
+  animation: heading-text var(--heading-reveal-duration, 1.2s) ease-in-out both;
+}
+
+.heading[data-heading-motion="revealed"] :global(.line--inner) {
+  animation: none;
+  opacity: 1;
+}
+
+.heading[data-heading-motion="revealed"] :global(.line--mask) {
+  animation: none;
+  width: 0;
+}
+
+@keyframes heading-mask {
+  0% {
+    width: 0;
+    transform: translateX(0);
+  }
+
+  45%,
+  55% {
+    width: 100%;
+    transform: translateX(0);
+  }
+
+  100% {
+    width: 100%;
+    transform: translateX(101%);
+  }
+}
+
+@keyframes heading-text {
+  0%,
+  50% {
+    opacity: 0;
+  }
+
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading[data-heading-motion] {
+    visibility: visible;
+  }
+
+  .heading :global(.line--inner) {
+    animation: none;
+    opacity: 1;
+  }
+
+  .heading :global(.line--mask) {
+    display: none;
+    animation: none;
+  }
+}
