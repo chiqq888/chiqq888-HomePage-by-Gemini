@@ -6,6 +6,7 @@ import smartwashLogo from '../assets/ALL SVG WHITE/svg_smartwash.svg'
 import AnimatedHeading from '../components/motion/AnimatedHeading'
 import AnimatedBox from '../components/motion/AnimatedBox'
 import RevealParagraph from '../components/motion/RevealParagraph'
+import Link from '../components/routing/Link'
 import { BOX_REVEAL } from '../lib/motionSettings'
 
 type ProjectItem = {
@@ -15,6 +16,7 @@ type ProjectItem = {
   ready?: boolean
   logoClassName: string
   href?: string
+  to?: string
 }
 
 const projects: ProjectItem[] = [
@@ -47,7 +49,7 @@ const projects: ProjectItem[] = [
   {
     index: '05',
     name: 'ม.รดก',
-    href: 'https://www.behance.net/gallery/255584129/-(MORADK)-Student-Powered-Course-Review-App',
+    to: '/projects/moradk',
     logo: moradkLogo,
     logoClassName: 'h-10 sm:h-11 w-auto max-w-[74%]',
   },
@@ -63,7 +65,9 @@ type WorkCardProps = ProjectItem & {
   delay?: number
 }
 
-function WorkCard({ index, name, logo, ready = false, logoClassName, delay = 0, href }: WorkCardProps) {
+function WorkCard({ index, name, logo, ready = false, logoClassName, delay = 0, href, to }: WorkCardProps) {
+  const hasDestination = Boolean(href || to)
+
   const card = (
     <AnimatedBox
       as="article"
@@ -80,7 +84,7 @@ function WorkCard({ index, name, logo, ready = false, logoClassName, delay = 0, 
       />
       <div className="flex items-center justify-between text-[11px] font-medium tracking-[0.14em]">
         <span className="text-white/45">{index}</span>
-        {href ? (
+        {hasDestination ? (
           <span className="text-white/85">
             {ready ? 'LIVE' : 'PREVIEW'}
           </span>
@@ -99,6 +103,18 @@ function WorkCard({ index, name, logo, ready = false, logoClassName, delay = 0, 
       </div>
     </AnimatedBox>
   )
+
+  if (to) {
+    return (
+      <Link
+        to={to}
+        aria-label={`${name} — View project case study`}
+        className="block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+      >
+        {card}
+      </Link>
+    )
+  }
 
   return href ? (
     <a

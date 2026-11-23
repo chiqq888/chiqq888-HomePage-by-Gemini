@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useRef, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import { gsap, ScrollTrigger, useGSAP } from '../../lib/gsap'
 import { SCROLL_LERP } from '../../lib/motionSettings'
+import { useRouter } from '../../lib/routerContext'
 import { ScrollControlsContext } from '../../lib/scrollControls'
 
 const ANCHOR_SCROLL_DURATION = 0.9
@@ -45,9 +46,11 @@ function focusTarget(target: HTMLElement) {
 }
 
 function SmoothScrollProvider({ children }: { children: ReactNode }) {
+  const { pathname, hash, navigationId } = useRouter()
   const lenisRef = useRef<Lenis | null>(null)
   const activeRef = useRef(false)
   const clearTargetFocus = useRef<(() => void) | null>(null)
+  const prevRouteRef = useRef({ pathname, navigationId })
   const lockCount = useRef(0)
   const lockedStyles = useRef<{
     htmlOverflow: string
@@ -120,6 +123,40 @@ function SmoothScrollProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const controls = useMemo(() => ({ lockScroll, scrollToHash }), [lockScroll, scrollToHash])
+
+  useEffect(() => {
+    const prev = prevRouteRef.current
+    if (prev.pathname === pathname && prev.navigationId === navigationId) return
+    prevRouteRef.current = { pathname, navigationId }
+
+    let settleTimer = 0
+    const frameId = window.requestAnimationFrame(() => {
+      if (!activeRef.current) return
+      const instance = lenisRef.current
+      instance?.resize()
+
+      const target = hash ? getHashTarget(hash) : 0
+      const resolvedTarget = target === null ? 0 : target
+
+      if (instance) {
+        instance.scrollTo(resolvedTarget, { immediate: true, force: true })
+      } else {
+        scrollToNativeTarget(resolvedTarget)
+      }
+
+      ScrollTrigger.refresh()
+      settleTimer = window.setTimeout(() => {
+        if (!activeRef.current) return
+        lenisRef.current?.resize()
+        ScrollTrigger.refresh()
+      }, 150)
+    })
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+      window.clearTimeout(settleTimer)
+    }
+  }, [pathname, hash, navigationId])
 
   useGSAP(() => {
     let active = true

@@ -3,15 +3,31 @@ import passionLogo from '../../assets/main_byd.svg'
 import portraitLogo from '../../assets/main_nnueh.webp'
 import { gsap, useGSAP } from '../../lib/gsap'
 import { MENU_MOTION } from '../../lib/motionSettings'
+import { useRouter } from '../../lib/routerContext'
 import { useScrollControls } from '../../lib/scrollControls'
 import styles from './SectionMenu.module.css'
 
-const sections = [
+const homeSections = [
   { href: '#intro', label: 'Intro', index: '01' },
   { href: '#works', label: 'Works', index: '02' },
   { href: '#journey', label: 'Journey', index: '03' },
   { href: '#stack', label: 'Stack', index: '04' },
 ]
+
+const moradkSections = [
+  { href: '#overview', label: 'Overview', index: '01' },
+  { href: '#discover', label: 'Discover', index: '02' },
+  { href: '#review-detail', label: 'Review Detail', index: '03' },
+  { href: '#architecture', label: 'Design System', index: '04' },
+  { href: '#share', label: 'Share', index: '05' },
+  { href: '#your-space', label: 'Your Space', index: '06' },
+  { href: '#people', label: 'People', index: '07' },
+]
+
+type PendingTarget =
+  | { kind: 'hash'; value: string }
+  | { kind: 'route'; value: string }
+  | null
 
 type SectionMenuProps = {
   open: boolean
@@ -20,6 +36,10 @@ type SectionMenuProps = {
 }
 
 function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
+  const { pathname, navigate } = useRouter()
+  const isMoradkPage = pathname === '/projects/moradk'
+  const sections = isMoradkPage ? moradkSections : homeSections
+
   const dialogRef = useRef<HTMLDialogElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const backdropRef = useRef<HTMLDivElement>(null)
@@ -27,7 +47,7 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
   const animateRef = useRef<((nextOpen: boolean) => void) | null>(null)
   const releaseScrollRef = useRef<(() => void) | null>(null)
-  const pendingHash = useRef<string | null>(null)
+  const pendingTarget = useRef<PendingTarget>(null)
   const wantedOpen = useRef(false)
   const { lockScroll, scrollToHash } = useScrollControls()
 
@@ -36,12 +56,13 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
     if (dialog?.open) dialog.close()
     releaseScrollRef.current?.()
     releaseScrollRef.current = null
-    const hash = pendingHash.current
-    pendingHash.current = null
-    // Release both scroll locks before navigating to the selected section.
-    if (hash) scrollToHash(hash)
+    const target = pendingTarget.current
+    pendingTarget.current = null
+    // Release both scroll locks before navigating to the selected section or route.
+    if (target?.kind === 'hash') scrollToHash(target.value)
+    else if (target?.kind === 'route') navigate(target.value)
     else anchorRef.current?.focus({ preventScroll: true })
-  }, [anchorRef, scrollToHash])
+  }, [anchorRef, navigate, scrollToHash])
 
   useGSAP((_, contextSafe) => {
     const dialog = dialogRef.current
@@ -106,7 +127,7 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
       timelineRef.current = null
 
       if (nextOpen) {
-        pendingHash.current = null
+        pendingTarget.current = null
         if (!dialog.open) {
           dialog.showModal()
           releaseScrollRef.current = lockScroll()
@@ -187,24 +208,24 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
       timelineRef.current?.kill()
       timelineRef.current = null
       animateRef.current = null
-      pendingHash.current = null
+      pendingTarget.current = null
       if (dialog.open) dialog.close()
       releaseScrollRef.current?.()
       releaseScrollRef.current = null
       if (originalPanelStyle === null) panel.removeAttribute('style')
       else panel.setAttribute('style', originalPanelStyle)
     }
-  }, { scope: dialogRef, dependencies: [anchorRef, finishClose, lockScroll], revertOnUpdate: true })
+  }, { scope: dialogRef, dependencies: [anchorRef, finishClose, lockScroll, pathname], revertOnUpdate: true })
 
   useGSAP(() => {
     wantedOpen.current = open
     animateRef.current?.(open)
   }, { scope: dialogRef, dependencies: [open, lockScroll, finishClose] })
 
-  const chooseSection = (event: MouseEvent<HTMLAnchorElement>, hash: string) => {
+  const chooseTarget = (event: MouseEvent<HTMLAnchorElement>, target: Exclude<PendingTarget, null>) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     event.preventDefault()
-    pendingHash.current = hash
+    pendingTarget.current = target
     onRequestClose()
   }
 
@@ -233,10 +254,11 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
       >
         <div className="flex h-[var(--menu-button-height)] shrink-0 items-center justify-between border-b border-ink/10">
           <a
-            href="#intro"
+            href={isMoradkPage ? '/' : '#intro'}
             aria-label="chiqq888 home"
             data-menu-brand
-            onClick={(event) => chooseSection(event, '#intro')}
+            onClick={(event) =>
+              chooseTarget(event, isMoradkPage ? { kind: 'route', value: '/' } : { kind: 'hash', value: '#intro' })}
             className="flex h-full w-fit items-center gap-3 px-5 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ink md:px-6"
           >
             <img src={passionLogo} alt="Design by Passion" className="h-7 w-auto md:h-8" />
@@ -257,13 +279,41 @@ function SectionMenu({ open, anchorRef, onRequestClose }: SectionMenuProps) {
         </div>
         <div data-menu-scroll className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <div className="flex min-h-full flex-col justify-center">
-            <ul id="section-menu" aria-label="Sections" className="py-8 text-[clamp(30px,3vw,42px)] leading-[1.2]">
+            {isMoradkPage && (
+              <div className="border-b border-ink/10">
+                <a
+                  href="/#works"
+                  onClick={(event) => chooseTarget(event, { kind: 'route', value: '/#works' })}
+                  className="block px-5 py-3.5 text-xs font-bold tracking-[0.16em] uppercase text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ink md:px-6"
+                >
+                  <span className={styles.textMask}>
+                    <span data-menu-text className={styles.text}>
+                      <span className="flex items-center justify-between gap-4">
+                        <span>← Back to Works</span>
+                        <span className="text-[10px] font-medium tracking-[0.18em] text-ink/40">INDEX</span>
+                      </span>
+                    </span>
+                  </span>
+                </a>
+              </div>
+            )}
+            <ul
+              id="section-menu"
+              aria-label="Sections"
+              className={
+                isMoradkPage
+                  ? 'py-4 text-[clamp(22px,2.2vw,30px)] leading-[1.15]'
+                  : 'py-8 text-[clamp(30px,3vw,42px)] leading-[1.2]'
+              }
+            >
               {sections.map(({ href, label, index: sectionIndex }, index) => (
                 <li key={href} data-menu-item className="relative border-b border-transparent last:border-b-0">
                   <a
                     href={href}
-                    onClick={(event) => chooseSection(event, href)}
-                    className="block px-5 py-3.5 transition-all duration-200 hover:bg-ink/[0.04] hover:pl-7 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ink motion-reduce:transition-none md:px-6 md:py-4 md:hover:pl-8"
+                    onClick={(event) => chooseTarget(event, { kind: 'hash', value: href })}
+                    className={`block px-5 transition-all duration-200 hover:bg-ink/[0.04] hover:pl-7 focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ink motion-reduce:transition-none md:px-6 md:hover:pl-8 ${
+                      isMoradkPage ? 'py-2.5 md:py-3' : 'py-3.5 md:py-4'
+                    }`}
                   >
                     <span className={styles.textMask}>
                       <span data-menu-text className={styles.text}>

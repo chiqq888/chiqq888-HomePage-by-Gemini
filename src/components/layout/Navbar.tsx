@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import passionLogo from '../../assets/main_byd.svg'
 import portraitLogo from '../../assets/main_nnueh.webp'
 import menuIcon from '../../assets/ICON/fi-rr-menu-burger.svg'
+import { useRouter } from '../../lib/routerContext'
+import Link from '../routing/Link'
 import SectionMenu from './SectionMenu'
 
 function Navbar() {
+  const { pathname } = useRouter()
   const navbarRef = useRef<HTMLElement>(null)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const [overDarkSection, setOverDarkSection] = useState(false)
@@ -49,13 +52,25 @@ function Navbar() {
       window.removeEventListener('scroll', scheduleUpdate)
       window.removeEventListener('resize', scheduleUpdate)
     }
-  }, [])
+  }, [pathname])
 
   const surfaceClassName = !scrolled
     ? 'border-transparent bg-transparent'
     : overDarkSection
       ? 'border-white/10 bg-ink/85 backdrop-blur-md'
       : 'border-ink/10 bg-white/85 backdrop-blur-md'
+
+  const brandClassName = `flex w-fit items-center gap-3 md:gap-4 focus-visible:outline-2 focus-visible:outline-offset-4 ${overDarkSection ? 'focus-visible:outline-white' : 'focus-visible:outline-ink'}`
+  const brandContent = (
+    <>
+      <img
+        src={passionLogo}
+        alt="Design by Passion"
+        className={`h-9 w-auto transition-[filter] duration-300 md:h-11 ${overDarkSection ? 'brightness-0 invert' : ''}`}
+      />
+      <img src={portraitLogo} alt="chiqq888 portrait logo" className="size-10 object-contain md:size-12" />
+    </>
+  )
 
   return (
     <nav
@@ -66,18 +81,15 @@ function Navbar() {
       className={`sticky top-0 z-50 w-full border-b transition-colors duration-300 ${surfaceClassName}`}
     >
       <div className="mx-auto grid w-full max-w-[1440px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-6 py-3.5 sm:px-8 md:gap-8 md:py-4 lg:px-12 xl:px-16">
-        <a
-          href="#intro"
-          aria-label="chiqq888 home"
-          className={`flex w-fit items-center gap-3 md:gap-4 focus-visible:outline-2 focus-visible:outline-offset-4 ${overDarkSection ? 'focus-visible:outline-white' : 'focus-visible:outline-ink'}`}
-        >
-          <img
-            src={passionLogo}
-            alt="Design by Passion"
-            className={`h-9 w-auto transition-[filter] duration-300 md:h-11 ${overDarkSection ? 'brightness-0 invert' : ''}`}
-          />
-          <img src={portraitLogo} alt="chiqq888 portrait logo" className="size-10 object-contain md:size-12" />
-        </a>
+        {pathname === '/' ? (
+          <a href="#intro" aria-label="chiqq888 home" className={brandClassName}>
+            {brandContent}
+          </a>
+        ) : (
+          <Link to="/" aria-label="chiqq888 home" className={brandClassName}>
+            {brandContent}
+          </Link>
+        )}
 
         <div
           aria-hidden="true"
