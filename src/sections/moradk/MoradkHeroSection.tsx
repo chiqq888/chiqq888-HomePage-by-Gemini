@@ -87,10 +87,10 @@ function MoradkHeroSection() {
       ref={sectionRef}
       id="overview"
       aria-labelledby="moradk-hero-heading"
-      className="flex min-h-[calc(100svh-69px)] w-full scroll-mt-20 flex-col justify-between overflow-x-clip bg-white md:min-h-[calc(100svh-81px)] md:scroll-mt-24 lg:h-[calc(100svh-81px)] lg:min-h-[620px] lg:max-h-[920px]"
+      className="w-full scroll-mt-20 overflow-x-clip bg-white md:scroll-mt-24 lg:flex lg:h-[670px] lg:flex-col xl:h-[700px] 2xl:h-[824px]"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-1 min-h-0 px-6 sm:px-8 lg:px-12 xl:px-16">
-        <div className="grid w-full flex-1 min-h-0 grid-cols-1 items-end gap-10 pt-8 sm:pt-10 lg:grid-cols-12 lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:pt-0">
+      <div className="mx-auto flex w-full max-w-[1440px] px-6 sm:px-8 lg:min-h-0 lg:flex-1 lg:px-12 xl:px-16">
+        <div className="grid w-full flex-1 min-h-0 grid-cols-1 items-end gap-10 pt-8 sm:pt-10 lg:h-full lg:grid-cols-12 lg:grid-rows-1 lg:items-stretch lg:gap-8 lg:pt-0">
           <div className="flex flex-col items-start justify-center pb-2 lg:col-span-6 lg:py-8">
             <p className="mb-4 text-xs font-bold tracking-[0.16em] uppercase text-ink/60 lg:text-sm">
               [05 / Mobile Web &amp; UI/UX Design]
@@ -166,7 +166,7 @@ function MoradkHeroSection() {
         </div>
       </div>
 
-      <div className="shrink-0">
+      <div className="lg:shrink-0">
         <div className="border-t border-ink/12 bg-white">
           <dl className="mx-auto grid w-full max-w-[1440px] grid-cols-2 divide-ink/12 px-6 sm:px-8 lg:grid-cols-4 lg:divide-x lg:px-12 xl:px-16">
             {metadataItems.map(({ label, value, hasSignalDot }, index) => (
@@ -197,14 +197,14 @@ function MoradkHeroSection() {
                 key={copy}
                 aria-label={copy === 0 ? 'MORADK highlights' : undefined}
                 aria-hidden={copy === 1 ? true : undefined}
-                className="flex min-w-[100vw] shrink-0 items-center gap-10 pr-10 text-xs font-bold tracking-[0.18em] uppercase"
+                className="flex min-h-6 min-w-[100vw] shrink-0 items-center gap-10 pr-10 text-xs font-bold tracking-[0.18em] uppercase md:min-h-7"
               >
                 {marqueePhrases.map((phrase) => (
                   <li key={phrase} className="flex shrink-0 items-center gap-6">
                     <img
                       src={moradkLogo}
                       alt={copy === 0 ? 'ม.รดก' : ''}
-                      className="h-5 w-auto object-contain opacity-90"
+                      className="h-5 w-auto object-contain opacity-90 md:h-6"
                     />
                     <span aria-hidden="true" className="size-1.5 bg-[#f16322]" />
                     <span className="text-white/90">{phrase}</span>

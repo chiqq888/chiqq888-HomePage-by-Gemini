@@ -90,7 +90,7 @@
   }
 
   .workHover [data-work-status] {
-    transform-origin: right center;
+    transform-origin: center;
   }
 
   .workHover::after {

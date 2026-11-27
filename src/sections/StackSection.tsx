@@ -29,8 +29,8 @@ import officeLogo from '../assets/SKILL_logo/OTHER_OFFICE365.svg'
 import arduinoLogo from '../assets/SKILL_logo/OTHER_AUDUINO.svg'
 import raspberryPiLogo from '../assets/SKILL_logo/OTHER_RASPI.svg'
 import tableauLogo from '../assets/SKILL_logo/OTHER_TABLEAU.svg'
+import portraitLogo from '../assets/main_nnueh.webp'
 import AnimatedBox from '../components/motion/AnimatedBox'
-import AnimatedHeading from '../components/motion/AnimatedHeading'
 import BackgroundVideo from '../components/motion/BackgroundVideo'
 import CursorTooltip from '../components/motion/CursorTooltip'
 
@@ -76,7 +76,7 @@ const skillGroups = [
     ],
   },
   {
-    label: 'CREATIVE TOOLS :',
+    label: 'CREATING TOOLS :',
     skills: [
       { name: 'Figma', image: figmaLogo },
       { name: 'Blender', image: blenderLogo },
@@ -95,21 +95,6 @@ const skillGroups = [
   },
 ]
 
-const desktopHorizontalFadeStyle = {
-  backgroundImage:
-    'linear-gradient(to right, #ffffff 0%, #ffffff 34%, rgba(255, 255, 255, 0.96) 41%, rgba(255, 255, 255, 0.84) 49%, rgba(255, 255, 255, 0.64) 57%, rgba(255, 255, 255, 0.38) 66%, rgba(255, 255, 255, 0.16) 75%, rgba(255, 255, 255, 0.04) 84%, rgba(255, 255, 255, 0) 92%)',
-} as const
-
-const desktopTopFadeStyle = {
-  backgroundImage:
-    'linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0.65) 35%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%)',
-} as const
-
-const desktopBottomFadeStyle = {
-  backgroundImage:
-    'linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0.65) 35%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%)',
-} as const
-
 function StackSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -118,67 +103,67 @@ function StackSection() {
       ref={sectionRef}
       id="stack"
       aria-labelledby="stack-heading"
-      className="relative isolate w-full scroll-mt-20 overflow-hidden bg-white py-20 md:scroll-mt-24 md:py-28 lg:py-32"
+      className="relative z-20 isolate w-full scroll-mt-20 bg-white py-10 sm:py-12 md:scroll-mt-24 lg:py-14 xl:py-16"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-30 -translate-y-1/2"
+      >
+        <div className="mx-auto w-full max-w-[1280px] px-6 sm:px-10 md:px-14 lg:px-20">
+          <div className="grid grid-cols-1 sm:grid-cols-[152px_1fr] sm:gap-x-5 lg:grid-cols-[164px_1fr] lg:gap-x-6 xl:grid-cols-[172px_1fr] xl:gap-x-7">
+            <div className="hidden sm:block" />
+            <div className="pl-2 sm:pl-4">
+              <img
+                src={portraitLogo}
+                alt=""
+                loading="lazy"
+                className="size-11 object-contain sm:size-12 lg:size-14 xl:size-[60px]"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        <BackgroundVideo
-          src={stackVideo}
-          poster={stackPoster}
-          className="absolute inset-0 h-full w-full object-cover object-right opacity-25 lg:opacity-100"
-        />
-        <div className="absolute inset-0 bg-white/75 lg:hidden" />
-        <div
-          className="absolute inset-0 hidden lg:block"
-          style={desktopHorizontalFadeStyle}
-        />
-        <div
-          className="absolute inset-x-0 top-0 hidden h-20 lg:block"
-          style={desktopTopFadeStyle}
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 hidden h-20 lg:block"
-          style={desktopBottomFadeStyle}
-        />
+        <div className="absolute inset-0 lg:left-auto lg:w-[53%] xl:w-[51%] 2xl:w-[50%]">
+          <BackgroundVideo
+            src={stackVideo}
+            poster={stackPoster}
+            className="h-full w-full object-cover object-[65%_center] lg:object-right"
+          />
+          <div className="absolute inset-y-0 left-0 w-[100%] bg-linear-to-r from-white/90 via-white/75 to-transparent lg:w-[12%] lg:from-white lg:via-white/70" />
+        </div>
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-8 lg:px-12 xl:px-16">
-        <div>
-          <p className="mb-2 text-xs font-medium tracking-[0.2em] uppercase text-ink/50">
-            [03 / Capabilities]
-          </p>
-          <AnimatedHeading
-            as="h2"
-            id="stack-heading"
-            className="text-[clamp(34px,4.2vw,64px)] leading-none tracking-tight"
-          >
-            OUR STACK
-          </AnimatedHeading>
-        </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 sm:px-10 md:px-14 lg:px-20">
+        <h2 id="stack-heading" className="sr-only">
+          Our Stack
+        </h2>
 
-        <dl className="mt-10 max-w-[760px] divide-y divide-ink/10 border-y border-ink/10 md:mt-12 lg:max-w-[62%] xl:max-w-[60%]">
+        <dl className="space-y-3.5 sm:space-y-4 lg:space-y-5 xl:space-y-6">
           {skillGroups.map(({ label, skills }) => (
             <div
               key={label}
-              className="grid grid-cols-1 gap-3.5 py-5 sm:grid-cols-[224px_1fr] sm:items-center sm:gap-6 md:py-5"
+              className="grid grid-cols-1 gap-y-3 sm:grid-cols-[152px_1fr] sm:items-center sm:gap-x-5 lg:grid-cols-[164px_1fr] lg:gap-x-6 xl:grid-cols-[172px_1fr] xl:gap-x-7"
             >
               <AnimatedBox
                 as="dt"
-                className="w-fit text-xs tracking-wider text-white sm:w-full md:text-[13px]"
-                contentClassName="flex min-h-11 items-center bg-ink px-4 py-2 sm:min-h-12"
+                className="w-fit text-[9.5px] tracking-wider text-white sm:w-full sm:text-[10px] xl:text-[10.5px]"
+                contentClassName="flex min-h-8 items-center bg-ink px-2.5 py-1.5 sm:min-h-9 sm:px-3 xl:min-h-[38px]"
                 hoverEffect="stack-label"
               >
-                <span data-stack-label>{label}</span>
+                <span data-stack-label className="whitespace-nowrap">{label}</span>
               </AnimatedBox>
               <dd>
-                <ul className="flex flex-wrap gap-2 sm:gap-2.5 md:gap-3">
+                <ul className="flex flex-wrap gap-2 xl:gap-2.5">
                   {skills.map(({ name, image }, index) => (
                     <AnimatedBox
                       key={name}
                       as="li"
-                      className="size-10 sm:size-12 md:size-[52px]"
+                      className="size-8 sm:size-9 xl:size-[38px]"
                       hoverEffect="stack-icon"
                       data-cursor-label={name}
                       delay={(index + 1) * 0.045}

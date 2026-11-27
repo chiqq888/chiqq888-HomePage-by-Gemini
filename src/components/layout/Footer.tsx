@@ -23,58 +23,57 @@ function Footer() {
     <footer
       id="footer"
       data-nav-surface="dark"
-      className="w-full border-t border-white/10 bg-ink text-white"
+      className="relative z-30 w-full bg-ink text-white"
     >
-      <div className="mx-auto w-full max-w-[1440px] px-6 py-14 sm:px-8 md:py-16 lg:px-12 lg:py-20 xl:px-16">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[auto_1fr_auto] md:items-start md:gap-12 lg:gap-16">
-          <img
-            src={portraitLogo}
-            alt="chiqq888 portrait logo"
-            loading="lazy"
-            className="size-28 object-contain sm:size-32 lg:size-36"
-          />
+      <div className="mx-auto w-full max-w-[1280px] px-6 py-8 sm:px-10 sm:py-10 md:px-14 lg:px-20 lg:py-12">
+        <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7 lg:gap-9">
+            <img
+              src={portraitLogo}
+              alt="chiqq888 portrait logo"
+              loading="lazy"
+              className="size-24 shrink-0 object-contain sm:size-28 lg:size-32 xl:size-[136px]"
+            />
 
-          <div>
-            <p className="mb-2 text-[11px] font-medium tracking-[0.2em] uppercase text-white/45">
-              [04 / Get in Touch]
-            </p>
-            <AnimatedHeading as="h2" className="text-2xl leading-tight tracking-tight md:text-3xl">
-              Contact
-            </AnimatedHeading>
-            <address className="mt-5 grid gap-3.5 text-sm font-medium not-italic text-white/80 md:text-[15px]">
-              <p className="flex items-center gap-3.5">
-                <img src={buildingIcon} alt="" className="size-5 shrink-0 opacity-80" />
-                <span>Ayutthaya, Thailand</span>
-              </p>
-              <p className="flex items-center gap-3.5">
-                <img src={buildingIcon} alt="" className="size-5 shrink-0 opacity-80" />
-                <span>Ladkrabang, Bangkok, Thailand</span>
-              </p>
-              <p className="flex items-center gap-3.5">
-                <img src={envelopeIcon} alt="" className="size-5 shrink-0 opacity-80" />
-                <a
-                  href="mailto:contact@chiqq888.me"
-                  className="underline-offset-4 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                >
-                  contact@chiqq888.me
-                </a>
-              </p>
-            </address>
+            <div>
+              <AnimatedHeading as="h2" className="text-lg leading-tight tracking-tight sm:text-xl lg:text-2xl">
+                Contact
+              </AnimatedHeading>
+              <address className="mt-3 grid gap-2 text-[11px] font-medium not-italic text-white/90 sm:text-xs lg:text-[13px]">
+                <p className="flex items-center gap-3">
+                  <img src={buildingIcon} alt="" className="size-4 shrink-0 opacity-85" />
+                  <span>Ayutthaya, Thailand</span>
+                </p>
+                <p className="flex items-center gap-3">
+                  <img src={buildingIcon} alt="" className="size-4 shrink-0 opacity-85" />
+                  <span>Ladkrabang, Bangkok, Thailand</span>
+                </p>
+                <p className="flex items-center gap-3">
+                  <img src={envelopeIcon} alt="" className="size-4 shrink-0 opacity-85" />
+                  <a
+                    href="mailto:contact@chiqq888.me"
+                    className="underline-offset-4 hover:text-white hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  >
+                    contact@chiqq888.me
+                  </a>
+                </p>
+              </address>
+            </div>
           </div>
 
-          <div className="flex flex-col items-start gap-7 md:items-end">
+          <div className="flex flex-col items-start gap-4 md:items-end md:justify-between md:self-stretch">
             <a
               href="#root"
-              className="inline-flex items-center gap-2.5 border border-white/25 px-4 py-2.5 text-xs font-bold tracking-[0.14em] uppercase text-white transition-colors hover:bg-white hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:text-sm"
+              className="text-lg font-bold leading-tight tracking-tight text-white transition-opacity hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:text-xl lg:text-2xl"
             >
-              Back to top <span aria-hidden="true">↑</span>
+              Back to top
             </a>
 
-            <div className="flex flex-col items-start gap-3 md:items-end">
-              <span className="text-[11px] font-medium tracking-[0.2em] uppercase text-white/45">
-                Visit
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+              <span className="text-[11px] font-medium text-white/85 sm:text-xs">
+                visit
               </span>
-              <ul aria-label="Social profiles" className="flex items-center gap-3.5 sm:gap-4">
+              <ul aria-label="Social profiles" className="flex items-center gap-2.5 sm:gap-3">
                 {socialProfiles.map(({ name, image, href }) => {
                   const icon = (
                     <img
@@ -82,7 +81,7 @@ function Footer() {
                       alt={name}
                       title={href ? name : `${name} (Coming soon)`}
                       loading="lazy"
-                      className={`size-9 object-contain sm:size-10 ${href ? '' : 'opacity-50'}`}
+                      className={`size-7 object-contain sm:size-8 lg:size-[34px] ${href ? '' : 'opacity-85'}`}
                     />
                   )
 
@@ -104,12 +103,11 @@ function Footer() {
                 })}
               </ul>
             </div>
-          </div>
-        </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-medium text-white/45 sm:flex-row sm:items-center sm:justify-between">
-          <span>chiqq888 — Code &amp; Design</span>
-          <p>© 2026 chiqq888. All rights reserved.</p>
+            <p className="text-[10px] font-medium text-white/80 sm:text-[11px]">
+              © 2026 chiqq888. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

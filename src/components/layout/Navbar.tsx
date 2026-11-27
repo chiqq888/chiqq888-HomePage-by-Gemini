@@ -25,7 +25,7 @@ function Navbar() {
     const updateTheme = () => {
       animationFrame = 0
       const navbarBounds = navbar.getBoundingClientRect()
-      const sampleY = navbarBounds.top + navbarBounds.height / 2
+      const sampleY = navbarBounds.bottom + 1
       const darkSurfaces = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-surface="dark"]'))
 
       setScrolled(window.scrollY > 12)
@@ -66,9 +66,9 @@ function Navbar() {
       <img
         src={passionLogo}
         alt="Design by Passion"
-        className={`h-9 w-auto transition-[filter] duration-300 md:h-11 ${overDarkSection ? 'brightness-0 invert' : ''}`}
+        className={`h-8 w-auto transition-[filter] duration-300 md:h-9 ${overDarkSection ? 'brightness-0 invert' : ''}`}
       />
-      <img src={portraitLogo} alt="chiqq888 portrait logo" className="size-10 object-contain md:size-12" />
+      <img src={portraitLogo} alt="chiqq888 portrait logo" className="size-9 object-contain md:size-10" />
     </>
   )
 
@@ -80,7 +80,7 @@ function Navbar() {
       aria-label="Main navigation"
       className={`sticky top-0 z-50 w-full border-b transition-colors duration-300 ${surfaceClassName}`}
     >
-      <div className="mx-auto grid w-full max-w-[1440px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-6 py-3.5 sm:px-8 md:gap-8 md:py-4 lg:px-12 xl:px-16">
+      <div className="mx-auto grid w-full max-w-[1280px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-6 py-3 sm:px-10 md:gap-8 md:px-14 md:py-3.5 lg:px-20">
         {pathname === '/' ? (
           <a href="#intro" aria-label="chiqq888 home" className={brandClassName}>
             {brandContent}
@@ -93,7 +93,7 @@ function Navbar() {
 
         <div
           aria-hidden="true"
-          className={`h-px w-full max-w-xl justify-self-center transition-colors duration-300 ${overDarkSection ? 'bg-white/40' : 'bg-ink/25'}`}
+          className={`h-px w-full max-w-[44%] justify-self-center transition-colors duration-300 lg:w-[44%] lg:max-w-[480px] ${overDarkSection ? 'bg-white/40' : 'bg-ink/25'}`}
         />
 
         <button
@@ -103,9 +103,9 @@ function Navbar() {
           aria-expanded={menuOpen}
           aria-controls="section-menu"
           onClick={() => setMenuOpen((open) => !open)}
-          className={`flex size-10 cursor-pointer items-center justify-center justify-self-end transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 md:size-11 ${overDarkSection ? 'bg-white hover:bg-white/90 focus-visible:outline-white' : 'bg-ink hover:bg-ink/85 focus-visible:outline-ink'}`}
+          className={`flex size-9 cursor-pointer items-center justify-center justify-self-end transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 md:size-10 ${overDarkSection ? 'bg-white hover:bg-white/90 focus-visible:outline-white' : 'bg-ink hover:bg-ink/85 focus-visible:outline-ink'}`}
         >
-          <img src={menuIcon} alt="" className={`size-5 brightness-0 md:size-6 ${overDarkSection ? '' : 'invert'}`} />
+          <img src={menuIcon} alt="" className={`size-4 brightness-0 md:size-5 ${overDarkSection ? '' : 'invert'}`} />
         </button>
       </div>
 
